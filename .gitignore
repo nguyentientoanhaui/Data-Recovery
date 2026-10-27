@@ -4,3 +4,4 @@ preview-dist/
 backups/
 *.log
 .DS_Store
+preview/1006-*.mp4
