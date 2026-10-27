@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+    background-color: #000;
+  }
+}
+
+/* ------------------------------------------------- SVG noise overlays (Prisma) */
+/* Fine grain over the hero video. */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Coarse grain for section backgrounds. */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ------------------------------------------------------- recovery scan pattern
+   Data-recovery themed second hero layer: a faint grid with a diagonal light
+   band that slowly sweeps across, like a sector scan. Pure CSS — no media
+   file needed, so nothing on the page shows CRM footage anymore. */
+.recovery-pattern {
+  background-color: #070604;
+  background-image:
+    linear-gradient(rgba(246, 228, 207, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(246, 228, 207, 0.05) 1px, transparent 1px),
+    linear-gradient(
+      115deg,
+      transparent 30%,
+      rgba(246, 228, 207, 0.08) 46%,
+      rgba(246, 228, 207, 0.2) 50%,
+      rgba(246, 228, 207, 0.08) 54%,
+      transparent 70%
+    );
+  background-size:
+    48px 48px,
+    48px 48px,
+    220% 220%;
+  animation: recovery-scan 7s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+}
+
+/* Second variant: sweeps the other way with a slight hue shift so the two
+   switcher layers look clearly different from one another. */
+.recovery-pattern-alt {
+  animation-direction: reverse;
+  filter: hue-rotate(18deg) saturate(0.9);
+}
+
+/* --------------------------------------------------------- Gemini watermark
+   Right-edge scrim that hides the "Made with Gemini" badge on generated
+   video. Runs from the bottom up the right side and fades toward the left.
+   The edge is kept nearly opaque so bright badges disappear, while the
+   inward fade keeps the look soft instead of a hard-edged box. */
+.gemini-cover {
+  background: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.88) 35%,
+    rgba(0, 0, 0, 0.45) 65%,
+    transparent 82%
+  );
+}
+
+@keyframes recovery-scan {
+  0% {
+    background-position: 0 0, 0 0, 130% 50%;
+  }
+  50% {
+    background-position: 24px 24px, 24px 24px, 50% 50%;
+  }
+  100% {
+    background-position: 48px 48px, 48px 48px, -30% 50%;
+  }
+}
+
+/* ------------------------------- reveal-on-scroll (Prisma: per-character) */
+.reveal-letter {
+  opacity: 0.2;
+  transition: opacity 0.4s ease;
+}
+.reveal-letter.is-visible {
+  opacity: 1;
+}
