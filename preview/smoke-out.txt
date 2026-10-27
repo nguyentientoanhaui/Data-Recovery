@@ -1,11 +1,33 @@
-﻿PASS  navbar removed from the page
+﻿node : Error: Not implemented: HTMLMediaElement.prototype.play
+At line:1 char:236
++ ... ; node preview/build.mjs 2>$null; node preview/smoke.mjs 2>&1 | Out-F ...
++                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Error: Not impl....prototype.play:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    at module.exports (D:\web\drift-portfolio\node_modules\jsdom\lib\jsdom\browser\not-implemented.js:9:17)
+    at HTMLVideoElementImpl.play 
+(D:\web\drift-portfolio\node_modules\jsdom\lib\jsdom\living\nodes\HTMLMediaElement-impl.js:118:5)
+    at HTMLVideoElement.play 
+(D:\web\drift-portfolio\node_modules\jsdom\lib\jsdom\living\generated\HTMLMediaElement.js:148:60)
+    at play (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:178:25)
+    at file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:184:5
+    at commitHookEffectListMount (D:\web\drift-portfolio\node_modules\react-dom\cjs\react-dom.development.js:23189:26)
+    at commitPassiveMountOnFiber (D:\web\drift-portfolio\node_modules\react-dom\cjs\react-dom.development.js:24970:11)
+    at commitPassiveMountEffects_complete 
+(D:\web\drift-portfolio\node_modules\react-dom\cjs\react-dom.development.js:24930:9)
+    at commitPassiveMountEffects_begin 
+(D:\web\drift-portfolio\node_modules\react-dom\cjs\react-dom.development.js:24917:7)
+    at commitPassiveMountEffects (D:\web\drift-portfolio\node_modules\react-dom\cjs\react-dom.development.js:24905:3) 
+undefined
+PASS  navbar removed from the page
 PASS  no "Portfolio." brand anywhere
 PASS  no EN/VI language toggle
 PASS  hero full-screen
 PASS  hero video + recovery pattern layers  [v=1 p=1]
 PASS  hero video source
 PASS  hero video attrs
-PASS  hero video crossfade
+FAIL  hero video crossfade
 PASS  hero bottom gradient overlay
 PASS  hero noise overlay
 PASS  layer switcher removed
@@ -20,7 +42,7 @@ PASS  whole content cluster centred
 PASS  switcher removed (no floating buttons)
 PASS  heading lines centred
 PASS  CTA bar + tagline removed
-FAIL  heading kept small (compact cluster)
+PASS  heading kept small (compact cluster)
 PASS  hero subtitle
 PASS  features section present
 PASS  features bg-noise
@@ -32,15 +54,9 @@ PASS  tab titles  [01Data Recovery|02Video Repair|03Photo Repair|04Backup & Resc
 PASS  tab 1 active by default
 PASS  work log inside services band
 PASS  tab 1 shows data recovery + its log
-PASS  tab 1 has video
+PASS  tab 1 panel has no video
 PASS  panel slide animation present
-node : Warning: An update to AnimatePresence inside a test was not wrapped in act(...).
-At line:1 char:236
-+ ... ; node preview/build.mjs 2>$null; node preview/smoke.mjs 2>&1 | Out-F ...
-+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: (Warning: An upd...ed in act(...).:String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
+Warning: An update to AnimatePresence inside a test was not wrapped in act(...).
 
 When testing, code that causes React state updates should be wrapped into act(...):
 
@@ -51,17 +67,17 @@ act(() => {
 
 This ensures that you're testing the behavior the user would see in the browser. Learn more at 
 https://reactjs.org/link/wrap-tests-with-act
-    at AnimatePresence (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:599:28)
+    at AnimatePresence (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:488:28)
     at div
     at div
     at section
-    at FeaturesSection (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:10591:7)
+    at FeaturesSection (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:10459:7)
     at div
-    at Shell (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:10775:7)
+    at Shell (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:10610:7)
     at LangProvider (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:131:3)
     at App
 PASS  tab 2 shows video repair + its log
-PASS  tab 2 has video
+PASS  tab 2 panel has no video
 PASS  tab 2 aria-selected
 PASS  only one active tab pill
 Warning: An update to AnimatePresence inside a test was not wrapped in act(...).
@@ -75,13 +91,13 @@ act(() => {
 
 This ensures that you're testing the behavior the user would see in the browser. Learn more at 
 https://reactjs.org/link/wrap-tests-with-act
-    at AnimatePresence (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:599:28)
+    at AnimatePresence (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:488:28)
     at div
     at div
     at section
-    at FeaturesSection (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:10591:7)
+    at FeaturesSection (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:10459:7)
     at div
-    at Shell (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:10775:7)
+    at Shell (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:10610:7)
     at LangProvider (file:///D:/web/drift-portfolio/preview-dist/test-bundle.js:131:3)
     at App
 PASS  tab 4 shows backup + imaging log
@@ -100,4 +116,4 @@ PASS  CSS: backdrop-blur compiled
 ==============================
 51/52 checks passed
 FAILED:
-  - heading kept small (compact cluster) 
+  - hero video crossfade 

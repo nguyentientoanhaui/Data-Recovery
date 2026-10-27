@@ -1,10 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLang } from '../lang'
-
-const LAYERS: { kind: 'video' | 'pattern'; src?: string }[] = [
-  { kind: 'video', src: '/1006.mp4' },
-  { kind: 'pattern' },
-]
 
 /**
  * Hero (Drift layout + Prisma noise): full-screen self-running video with a
@@ -13,70 +8,60 @@ const LAYERS: { kind: 'video' | 'pattern'; src?: string }[] = [
  */
 export default function Hero() {
   const { t } = useLang()
-  const [active] = useState(0)
-  const [srcs, setSrcs] = useState<(string | null)[]>([null, null])
+  const videoRef = useRef<HTMLVideoElement>(null)
 
+  // Belt and braces: some browsers/contexts ignore the autoplay attribute
+  // until the user interacts with the page. Call play() ourselves on mount,
+  // on canplay, and on the first pointer/key interaction, then stop.
   useEffect(() => {
-    const cache = new Map<string, Promise<string>>()
-    const load = (url: string, i: number) => {
-      if (!cache.has(url)) {
-        cache.set(
-          url,
-          fetch(url)
-            .then((res) => res.blob())
-            .then((blob) => URL.createObjectURL(blob)),
-        )
+    const video = videoRef.current
+    if (!video) return
+    const play = () => {
+      try {
+        const p = video.play()
+        if (p && typeof p.catch === 'function') {
+          p.catch(() => {})
+        }
+      } catch {
+        /* autoplay blocked — the poster and first frame still show */
       }
-      cache
-        .get(url)!
-        .then((objectUrl) => {
-          setSrcs((prev) => {
-            const next = [...prev]
-            next[i] = objectUrl
-            return next
-          })
-        })
-        .catch(() => {
-          setSrcs((prev) => {
-            const next = [...prev]
-            next[i] = url
-            return next
-          })
-        })
     }
-    LAYERS.forEach((layer, i) => {
-      if (layer.kind === 'video' && layer.src) load(layer.src, i)
-    })
+    play()
+    video.addEventListener('canplay', play)
+    const onGesture = () => {
+      play()
+      window.removeEventListener('pointerdown', onGesture)
+      window.removeEventListener('keydown', onGesture)
+    }
+    window.addEventListener('pointerdown', onGesture)
+    window.addEventListener('keydown', onGesture)
+    return () => {
+      video.removeEventListener('canplay', play)
+      window.removeEventListener('pointerdown', onGesture)
+      window.removeEventListener('keydown', onGesture)
+    }
   }, [])
 
   return (
     <section className="relative h-screen overflow-hidden bg-black md:mb-[-25px]">
-      {/* Crossfading layers: video + recovery scan pattern */}
+      {/* Background layers: self-running video (recovery scan pattern hidden beneath) */}
       <div className="absolute inset-0">
-        {LAYERS.map((layer, i) =>
-          layer.kind === 'video' ? (
-            <video
-              key={`video-${i}`}
-              aria-hidden="true"
-              muted
-              autoPlay
-              playsInline
-              loop
-              src={srcs[i] ?? layer.src}
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-in-out ${
-                active === i ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          ) : (
-            <div
-              key={`pattern-${i}`}
-              aria-hidden="true"
-              className={`recovery-pattern absolute inset-0 h-full w-full transition-opacity duration-[1200ms] ease-in-out ${
-                active === i ? 'opacity-100' : 'opacity-0'
-              }`}
-            />
-          ),
-        )}
+        <video
+          ref={videoRef}
+          aria-hidden="true"
+          muted
+          autoPlay
+          playsInline
+          loop
+          preload="auto"
+          poster="/poster.jpg"
+          src="/1006.mp4"
+          className="absolute inset-0 h-full w-full object-cover opacity-100"
+        />
+        <div
+          aria-hidden="true"
+          className="recovery-pattern absolute inset-0 h-full w-full opacity-0"
+        />
       </div>
       {/* Gradient darkens only the bottom where the text sits */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
